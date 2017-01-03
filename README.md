@@ -1,5 +1,7 @@
 # the-nature-conservancy-fisheries-monitoring
 kaggle competition: https://www.kaggle.com/c/the-nature-conservancy-fisheries-monitoring
++ [forums](https://www.kaggle.com/c/the-nature-conservancy-fisheries-monitoring/forums)
++ [kernels](https://www.kaggle.com/c/the-nature-conservancy-fisheries-monitoring/kernels)
 
 In this competition, The Nature Conservancy asks you to help them detect which species of fish appears on a fishing boat, based on images captured from boat cameras of various angles.  
 
