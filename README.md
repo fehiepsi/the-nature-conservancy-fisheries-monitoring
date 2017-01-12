@@ -11,8 +11,7 @@ Eight target categories are available in this dataset: Albacore tuna, Bigeye tun
 
 ![species](https://kaggle2.blob.core.windows.net/competitions/kaggle/5568/media/species-ref-key.jpg)
 
-### File descriptions
-
+**File descriptions**
 + **train.zip** - zipped folder of all train images. The train folders are organized by fish species labels.
 + **test_stg1.zip** - zipped folder of all test images in stage 1.
 + **test_stg2.zip** - zipped folder of all test images in stage 2 (not available until the second stage of the competition).
@@ -23,7 +22,7 @@ Eight target categories are available in this dataset: Albacore tuna, Bigeye tun
 
 Submissions are evaluated using the [multi-class logarithmic loss](https://www.kaggle.com/wiki/MultiClassLogLoss). Each image has been labeled with one true class. For each image, you must submit a set of predicted probabilities (one for every image). The submitted probabilities for a given image are not required to sum to one because they are rescaled prior to being scored (each row is divided by the row sum). In order to avoid the extremes of the log function, predicted probabilities are replaced with `max(min(p,1-10^{-15}),10^{-15})`.
 
-### Submission File
+### Submission
 
 You must submit a csv file with the image file name, and a probability for each class.
 
