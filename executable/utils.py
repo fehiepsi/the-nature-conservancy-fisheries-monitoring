@@ -1,54 +1,13 @@
-from __future__ import division,print_function
-import math, os, json, sys, re
-import _pickle as cPickle
-from glob import glob
-import numpy as np
-from matplotlib import pyplot as plt
-from operator import itemgetter, attrgetter, methodcaller
-from collections import OrderedDict
+import math
 import itertools
-from itertools import chain
-
-import pandas as pd
-import PIL
-from PIL import Image
-from numpy.random import random, permutation, randn, normal, uniform, choice
-from numpy import newaxis
-import scipy
-from scipy import misc, ndimage
-from scipy.ndimage.interpolation import zoom
-from scipy.ndimage import imread
-from sklearn.metrics import confusion_matrix
 import bcolz
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.manifold import TSNE
 
-from IPython.lib.display import FileLink
+from matplotlib import pyplot as plt
 
-import theano
-from theano import shared, tensor as T
-from theano.tensor.nnet import conv2d, nnet
-from theano.tensor.signal import pool
-
-import keras
-from keras import backend as K
-from keras.utils.data_utils import get_file
-from keras.utils import np_utils
 from keras.utils.np_utils import to_categorical
-from keras.models import Sequential, Model
-from keras.layers import Input, Embedding, Reshape, merge, LSTM, Bidirectional
-from keras.layers import TimeDistributed, Activation, SimpleRNN, GRU
-from keras.layers.core import Flatten, Dense, Dropout, Lambda
-from keras.regularizers import l2, activity_l2, l1, activity_l1
-from keras.layers.normalization import BatchNormalization
-from keras.optimizers import SGD, RMSprop, Adam
 from keras.utils.layer_utils import layer_from_config
-from keras.metrics import categorical_crossentropy, categorical_accuracy
-from keras.layers.convolutional import *
-from keras.preprocessing import image, sequence
-from keras.preprocessing.text import Tokenizer
+from keras.preprocessing import image
 
-from vgg16 import *
 from vgg16bn import *
 np.set_printoptions(precision=4, linewidth=100)
 
@@ -196,12 +155,6 @@ def mk_square(img):
     return arr
 
 
-def vgg_ft(out_dim):
-    vgg = Vgg16()
-    vgg.ft(out_dim)
-    model = vgg.model
-    return model
-
 def vgg_ft_bn(out_dim):
     vgg = Vgg16BN()
     vgg.ft(out_dim)
@@ -209,45 +162,8 @@ def vgg_ft_bn(out_dim):
     return model
 
 
-def get_classes(path):
-    batches = get_batches(path+'train', shuffle=False, batch_size=1)
-    val_batches = get_batches(path+'valid', shuffle=False, batch_size=1)
-    test_batches = get_batches(path+'test', shuffle=False, batch_size=1)
-    return (val_batches.classes, batches.classes, onehot(val_batches.classes), onehot(batches.classes),
-        val_batches.filenames, batches.filenames, test_batches.filenames)
-
-
 def split_at(model, layer_type):
     layers = model.layers
     layer_idx = [index for index,layer in enumerate(layers)
                  if type(layer) is layer_type][-1]
     return layers[:layer_idx+1], layers[layer_idx+1:]
-
-
-class MixIterator(object):
-    def __init__(self, iters):
-        self.iters = iters
-        self.multi = type(iters) is list
-        if self.multi:
-            self.N = sum([it[0].N for it in self.iters])
-        else:
-            self.N = sum([it.N for it in self.iters])
-
-    def reset(self):
-        for it in self.iters: it.reset()
-
-    def __iter__(self):
-        return self
-
-    def next(self, *args, **kwargs):
-        if self.multi:
-            nexts = [[next(it) for it in o] for o in self.iters]
-            n0s = np.concatenate([n[0] for n in o])
-            n1s = np.concatenate([n[1] for n in o])
-            return (n0, n1)
-        else:
-            nexts = [next(it) for it in self.iters]
-            n0 = np.concatenate([n[0] for n in nexts])
-            n1 = np.concatenate([n[1] for n in nexts])
-            return (n0, n1)
-

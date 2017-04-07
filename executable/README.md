@@ -1,0 +1,1 @@
+pytorch-resnet and keras-vgg are based on https://github.com/rdcolema/nc-fish-classification/
